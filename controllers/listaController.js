@@ -61,7 +61,7 @@ exports.obtenerListas = async (req, res) => {
 }
 
 
-// elimina una lista por su id
+// elimina una lista por su id 
 exports.eliminarLista = async (req, res) => {
     try {
         //revisar el id
@@ -76,6 +76,9 @@ exports.eliminarLista = async (req, res) => {
         if (lista.creador.toString() !== req.usuario.id) {
             return res.status(401).json({ msg: 'No Autorizado' })
         }
+
+        // eliminar tareas dentro de la lista
+        await Tarea.deleteMany({ lista: req.params.id })
 
         // eliminar lista
         await lista.remove()
